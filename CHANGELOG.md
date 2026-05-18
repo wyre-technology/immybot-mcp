@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Corrected the Streamable HTTP transport import in `src/http.ts`. The code
+  imported `StreamableHTTPServerTransport` from the non-existent
+  `@modelcontextprotocol/sdk/server/http.js`, causing the container to crash on
+  startup with `ERR_MODULE_NOT_FOUND`. It now imports from the correct
+  `@modelcontextprotocol/sdk/server/streamableHttp.js` path.
+- Bumped `@wyre-technology/node-immybot` dependency from `^0.1.0` to `^1.0.0` to
+  match the published package version (the `^0.1.0` range no longer resolved).
+
 ### Added
 - Initial release of ImmyBot MCP server
 - OAuth 2.0 authentication with Microsoft Entra ID client credentials
