@@ -1,0 +1,69 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.wyre-technology/immybot-mcp",
+  "title": "ImmyBot",
+  "description": "MCP server for ImmyBot \u2014 Windows software deployment, maintenance automation, tenants, and deployments.",
+  "repository": {
+    "url": "https://github.com/wyre-technology/immybot-mcp",
+    "source": "github"
+  },
+  "version": "0.0.0",
+  "websiteUrl": "https://github.com/wyre-technology/immybot-mcp",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/wyre-technology/immybot-mcp:0.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "IMMYBOT_TENANT_ID",
+          "description": "ImmyBot Azure AD tenant ID",
+          "isRequired": true,
+          "format": "string"
+        },
+        {
+          "name": "IMMYBOT_CLIENT_ID",
+          "description": "ImmyBot OAuth client ID",
+          "isRequired": true,
+          "format": "string"
+        },
+        {
+          "name": "IMMYBOT_CLIENT_SECRET",
+          "description": "ImmyBot OAuth client secret",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "IMMYBOT_INSTANCE_SUBDOMAIN",
+          "description": "ImmyBot instance subdomain (e.g. 'acme' for acme.immy.bot)",
+          "isRequired": true,
+          "format": "string"
+        },
+        {
+          "name": "MCP_TRANSPORT",
+          "description": "Transport mode for the server. Set to 'stdio' for local CLI use; the image defaults to 'http' for gateway hosting.",
+          "isRequired": false,
+          "default": "stdio",
+          "format": "string"
+        },
+        {
+          "name": "AUTH_MODE",
+          "description": "Credential source: 'env' reads vars locally, 'gateway' expects header injection from the WYRE MCP Gateway.",
+          "isRequired": false,
+          "default": "env",
+          "format": "string"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "description": "Log verbosity: debug, info, warn, error",
+          "isRequired": false,
+          "default": "info",
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
