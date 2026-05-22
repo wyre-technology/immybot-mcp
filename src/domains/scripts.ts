@@ -291,7 +291,7 @@ async function handleCall(
           parameters: args.parameters as any,
           timeoutMinutes: args.timeout as number,
           runAs: args.runAs as any,
-        });
+        } as any);
 
         return {
           content: [{
@@ -314,7 +314,7 @@ async function handleCall(
 
       case 'immybot_scripts_execution_history': {
         const computerId = args.computerId as number;
-        const executions = await client.scripts.getExecutionHistoryForComputer(computerId);
+        const executions = await client.scripts.getExecutionHistoryForComputer(computerId) as any[];
 
         if (executions.length === 0) {
           return {
@@ -343,7 +343,7 @@ async function handleCall(
       case 'immybot_scripts_execution_result': {
         const scriptId = args.scriptId as number;
         const executionId = args.executionId as number;
-        const result = await client.scripts.getExecutionResult(scriptId, executionId);
+        const result = await client.scripts.getExecutionResult(scriptId, executionId) as any;
 
         const details = [
           `Script Execution Result (ID: ${result.id})`,
