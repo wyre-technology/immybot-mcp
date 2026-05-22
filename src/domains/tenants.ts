@@ -190,7 +190,7 @@ async function handleCall(
 
       case 'immybot_tenants_search': {
         const query = args.query as string;
-        const tenants = await client.tenants.search(query);
+        const tenants = await client.tenants.search(query) as any[];
 
         if (tenants.length === 0) {
           return {
