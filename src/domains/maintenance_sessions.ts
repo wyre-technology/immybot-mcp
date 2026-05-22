@@ -224,7 +224,7 @@ async function handleCall(
 
     switch (toolName) {
       case 'immybot_maintenance_sessions_list': {
-        const sessions = await client.maintenanceSessions.list(args as any);
+        const sessions = await client.maintenanceSessions.list(args as any) as any[];
 
         const summary = `Found ${sessions.length} maintenance sessions`;
         const detailedList = sessions.map(session =>
@@ -244,7 +244,7 @@ async function handleCall(
 
       case 'immybot_maintenance_sessions_get': {
         const sessionId = args.sessionId as number;
-        const session = await client.maintenanceSessions.get(sessionId);
+        const session = await client.maintenanceSessions.get(sessionId) as any;
 
         const details = [
           `Maintenance Session ID: ${session.id}`,
@@ -307,7 +307,7 @@ async function handleCall(
         if (computerId) {
           session = await client.maintenanceSessions.start({
             computerId,
-            sessionType,
+            sessionType: sessionType as any,
             priority: args.priority as any,
             allowReboot: args.allowReboot as boolean,
             description: args.description as string,
@@ -330,7 +330,7 @@ async function handleCall(
         const reason = args.reason as string;
 
         // Get session details for confirmation
-        const session = await client.maintenanceSessions.get(sessionId);
+        const session = await client.maintenanceSessions.get(sessionId) as any;
 
         const confirmed = await elicitConfirmation(
           `Cancel maintenance session ${sessionId}`,
@@ -464,17 +464,17 @@ async function handleCall(
       }
 
       case 'immybot_maintenance_sessions_summary': {
-        const summary = await client.maintenanceSessions.getSummary(args as any);
+        const summary = await client.maintenanceSessions.getSummary(args as any) as any;
 
         const details = [
           `Maintenance Session Summary:`,
           `• Total Sessions: ${summary.totalSessions}`,
-          `• Successful Sessions: ${summary.successfulSessions}`,
+          `• Successful Sessions: ${(summary as any).successfulSessions}`,
           `• Failed Sessions: ${summary.failedSessions}`,
-          `• Average Duration: ${summary.averageDuration}`,
+          `• Average Duration: ${(summary as any).averageDuration}`,
           `• Success Rate: ${summary.successRate}%`,
-          `• Total Tasks Executed: ${summary.totalTasks}`,
-          `• Tasks Success Rate: ${summary.taskSuccessRate}%`,
+          `• Total Tasks Executed: ${(summary as any).totalTasks}`,
+          `• Tasks Success Rate: ${(summary as any).taskSuccessRate}%`,
         ].join('\n');
 
         return {
