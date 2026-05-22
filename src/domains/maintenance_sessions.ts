@@ -311,7 +311,7 @@ async function handleCall(
             priority: args.priority as any,
             allowReboot: args.allowReboot as boolean,
             description: args.description as string,
-          });
+          } as any);
         } else {
           const sessions = await client.maintenanceSessions.startForTenant(tenantId, sessionType);
           session = sessions[0]; // For display purposes, show the first session
