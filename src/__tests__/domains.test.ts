@@ -71,15 +71,15 @@ describe('Domain Handlers', () => {
     it('should handle deployments list', async () => {
       const result = await deploymentsHandler.handleCall('immybot_deployments_list', {});
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Found 1 deployments');
-      expect(result.content[0].text).toContain('Test Deployment');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Found 1 deployments');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Deployment');
     });
 
     it('should handle deployments get', async () => {
       const result = await deploymentsHandler.handleCall('immybot_deployments_get', { deploymentId: 1 });
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Test Deployment');
-      expect(result.content[0].text).toContain('Software ID: 100');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Deployment');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Software ID: 100');
     });
   });
 
@@ -94,15 +94,15 @@ describe('Domain Handlers', () => {
     it('should handle scripts list', async () => {
       const result = await scriptsHandler.handleCall('immybot_scripts_list', {});
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Found 1 scripts');
-      expect(result.content[0].text).toContain('Test Script');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Found 1 scripts');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Script');
     });
 
     it('should handle scripts get', async () => {
       const result = await scriptsHandler.handleCall('immybot_scripts_get', { scriptId: 1 });
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Test Script');
-      expect(result.content[0].text).toContain('Language: PowerShell');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Script');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Language: PowerShell');
     });
   });
 
@@ -117,15 +117,15 @@ describe('Domain Handlers', () => {
     it('should handle tenants list', async () => {
       const result = await tenantsHandler.handleCall('immybot_tenants_list', {});
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Found 1 tenants');
-      expect(result.content[0].text).toContain('Test Tenant');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Found 1 tenants');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Tenant');
     });
 
     it('should handle tenants get', async () => {
       const result = await tenantsHandler.handleCall('immybot_tenants_get', { tenantId: 1 });
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Test Tenant');
-      expect(result.content[0].text).toContain('Status: Active');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Tenant');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Status: Active');
     });
   });
 
@@ -140,15 +140,15 @@ describe('Domain Handlers', () => {
     it('should handle maintenance sessions list', async () => {
       const result = await maintenanceSessionsHandler.handleCall('immybot_maintenance_sessions_list', {});
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Found 1 maintenance sessions');
-      expect(result.content[0].text).toContain('Session ID 1');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Found 1 maintenance sessions');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Session ID 1');
     });
 
     it('should handle maintenance sessions get', async () => {
       const result = await maintenanceSessionsHandler.handleCall('immybot_maintenance_sessions_get', { sessionId: 1 });
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Maintenance Session ID: 1');
-      expect(result.content[0].text).toContain('Status: Completed');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Maintenance Session ID: 1');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Status: Completed');
     });
   });
 
@@ -163,15 +163,15 @@ describe('Domain Handlers', () => {
     it('should handle tasks list', async () => {
       const result = await tasksHandler.handleCall('immybot_tasks_list', {});
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Found 1 tasks');
-      expect(result.content[0].text).toContain('Test Task');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Found 1 tasks');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Task');
     });
 
     it('should handle tasks get', async () => {
       const result = await tasksHandler.handleCall('immybot_tasks_get', { taskId: 1 });
       expect(result.isError).toBe(undefined);
-      expect(result.content[0].text).toContain('Test Task');
-      expect(result.content[0].text).toContain('Type: SoftwareInstall');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Test Task');
+      expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Type: SoftwareInstall');
     });
   });
 });
