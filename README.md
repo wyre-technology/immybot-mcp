@@ -254,3 +254,4 @@ docker build -t immybot-mcp --build-arg NODE_AUTH_TOKEN=$GITHUB_TOKEN .
 ## License
 
 Apache-2.0 - see [LICENSE](LICENSE) for details.
+
