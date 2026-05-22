@@ -101,7 +101,7 @@ async function handleCall(
       return {
         content: [{
           type: 'text',
-          text: `Navigated to ${domain} domain - ${domainDescriptions[domain]}.\n\nDomain-specific tools are now available. Use immybot_back to return to the main menu.`
+          text: `Navigated to ${domain} domain - ${(domainDescriptions as Record<string, string>)[domain]}.\n\nDomain-specific tools are now available. Use immybot_back to return to the main menu.`
         }],
       };
     }
