@@ -1,5 +1,5 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { getAvailableTools, handleToolCall } from './domains/index.js';
 import { setServerRef, clearServerRef } from './utils/server-ref.js';
 import { logger } from './utils/logger.js';
@@ -24,7 +24,7 @@ export function createMcpServer(): Server {
   setServerRef(server);
 
   // Tool list handler
-  server.setRequestHandler('tools/list', async () => {
+  server.setRequestHandler(ListToolsRequestSchema, async () => {
     try {
       const tools = await getAvailableTools();
       logger.debug('Tools listed', { toolCount: tools.length });
@@ -37,9 +37,9 @@ export function createMcpServer(): Server {
   });
 
   // Tool call handler
-  server.setRequestHandler('tools/call', async (request) => {
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
     try {
-      const { name, arguments: args } = CallToolRequestSchema.parse(request.params);
+      const { name, arguments: args } = request.params;
       logger.debug('Tool called', { toolName: name, args });
 
       const result = await handleToolCall(name, args || {});
