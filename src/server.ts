@@ -37,7 +37,8 @@ export function createMcpServer(): Server {
   });
 
   // Tool call handler
-  server.setRequestHandler(CallToolRequestSchema, async (request, _extra) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  server.setRequestHandler(CallToolRequestSchema, (async (request: any, _extra: any) => {
     try {
       const { name, arguments: args } = request.params;
       logger.debug('Tool called', { toolName: name, args });
@@ -57,7 +58,7 @@ export function createMcpServer(): Server {
         isError: true,
       };
     }
-  });
+  }) as any);
 
   // Cleanup handler
   server.onclose = () => {
