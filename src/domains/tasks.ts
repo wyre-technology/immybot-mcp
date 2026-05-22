@@ -264,7 +264,7 @@ async function handleCall(
 
     switch (toolName) {
       case 'immybot_tasks_list': {
-        const tasks = await client.tasks.list(args as any);
+        const tasks = await client.tasks.list(args as any) as any[];
 
         const summary = `Found ${tasks.length} tasks`;
         const detailedList = tasks.map(task =>
@@ -284,7 +284,7 @@ async function handleCall(
 
       case 'immybot_tasks_get': {
         const taskId = args.taskId as number;
-        const task = await client.tasks.get(taskId);
+        const task = await client.tasks.get(taskId) as any;
 
         const details = [
           `Task: ${task.name || 'Unnamed'} (ID: ${task.id})`,
@@ -313,7 +313,7 @@ async function handleCall(
       }
 
       case 'immybot_tasks_running': {
-        const runningTasks = await client.tasks.getRunning();
+        const runningTasks = await client.tasks.getRunning() as any[];
 
         if (runningTasks.length === 0) {
           return {
@@ -339,7 +339,7 @@ async function handleCall(
       }
 
       case 'immybot_tasks_queued': {
-        const queuedTasks = await client.tasks.getQueued();
+        const queuedTasks = await client.tasks.getQueued() as any[];
 
         if (queuedTasks.length === 0) {
           return {
@@ -365,7 +365,7 @@ async function handleCall(
       }
 
       case 'immybot_tasks_failed': {
-        const failedTasks = await client.tasks.getFailed();
+        const failedTasks = await client.tasks.getFailed() as any[];
 
         if (failedTasks.length === 0) {
           return {
@@ -392,7 +392,7 @@ async function handleCall(
 
       case 'immybot_tasks_for_computer': {
         const computerId = args.computerId as number;
-        const tasks = await client.tasks.getForComputer(computerId);
+        const tasks = await client.tasks.getForComputer(computerId) as any[];
 
         if (tasks.length === 0) {
           return {
@@ -419,7 +419,7 @@ async function handleCall(
 
       case 'immybot_tasks_for_tenant': {
         const tenantId = args.tenantId as number;
-        const tasks = await client.tasks.getForTenant(tenantId);
+        const tasks = await client.tasks.getForTenant(tenantId) as any[];
 
         if (tasks.length === 0) {
           return {
@@ -446,7 +446,7 @@ async function handleCall(
 
       case 'immybot_tasks_by_type': {
         const taskType = args.taskType as string;
-        const tasks = await client.tasks.getByType(taskType);
+        const tasks = await client.tasks.getByType(taskType) as any[];
 
         if (tasks.length === 0) {
           return {
@@ -472,7 +472,7 @@ async function handleCall(
       }
 
       case 'immybot_tasks_queue_stats': {
-        const stats = await client.tasks.getQueueStats();
+        const stats = await client.tasks.getQueueStats() as any;
 
         const details = [
           `Task Queue Statistics:`,
@@ -493,7 +493,7 @@ async function handleCall(
       }
 
       case 'immybot_tasks_history': {
-        const tasks = await client.tasks.getHistory(args as any);
+        const tasks = await client.tasks.getHistory(args as any) as any[];
 
         if (tasks.length === 0) {
           return {
@@ -547,7 +547,7 @@ async function handleCall(
 
       case 'immybot_tasks_child_tasks': {
         const parentTaskId = args.parentTaskId as number;
-        const childTasks = await client.tasks.getChildTasks(parentTaskId);
+        const childTasks = await client.tasks.getChildTasks(parentTaskId) as any[];
 
         if (childTasks.length === 0) {
           return {
