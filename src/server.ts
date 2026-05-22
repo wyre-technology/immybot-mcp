@@ -24,7 +24,7 @@ export function createMcpServer(): Server {
   setServerRef(server);
 
   // Tool list handler
-  server.setRequestHandler(ListToolsRequestSchema, async () => {
+  server.setRequestHandler(ListToolsRequestSchema, async (_request, _extra) => {
     try {
       const tools = await getAvailableTools();
       logger.debug('Tools listed', { toolCount: tools.length });
@@ -37,7 +37,7 @@ export function createMcpServer(): Server {
   });
 
   // Tool call handler
-  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  server.setRequestHandler(CallToolRequestSchema, async (request, _extra) => {
     try {
       const { name, arguments: args } = request.params;
       logger.debug('Tool called', { toolName: name, args });
