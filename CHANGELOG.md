@@ -1,3 +1,28 @@
+# 1.0.0 (2026-05-22)
+
+
+### Bug Fixes
+
+* add extra parameter to setRequestHandler callbacks (MCP SDK v1.27.1) ([15ad127](https://github.com/wyre-technology/immybot-mcp/commit/15ad127230cf84e43f0082b2fb3b8b51a637ed4a))
+* add type assertion for content[0].text access ([1a81d6d](https://github.com/wyre-technology/immybot-mcp/commit/1a81d6d3458abf7aca82d9b145f117dcca86097d))
+* cast CallToolRequestSchema handler to any (MCP SDK v1.27.1 type mismatch) ([01070bf](https://github.com/wyre-technology/immybot-mcp/commit/01070bfd0a03e41711aeef86743b9a368581f693))
+* cast node-immybot Tenant type to any for missing properties ([d66a163](https://github.com/wyre-technology/immybot-mcp/commit/d66a1630eedcd91dd4eb50137f115c9ff379c896))
+* cast node-immybot types to any for missing properties ([2930870](https://github.com/wyre-technology/immybot-mcp/commit/293087049a4051ac81712b6bd551603107ba4be3))
+* cast node-immybot types to any for missing properties ([4b04475](https://github.com/wyre-technology/immybot-mcp/commit/4b04475bac8cea4689fc46fc3db2866d0ac796c5))
+* cast node-immybot types to any for missing properties ([4b31e9f](https://github.com/wyre-technology/immybot-mcp/commit/4b31e9f55333e1ea1a26bfa595b7a7e74e2b8878))
+* cast start() argument to any for missing description property ([8122ec6](https://github.com/wyre-technology/immybot-mcp/commit/8122ec69f624e945dea4e71dc1888c6a409f6ca8))
+* cast tenant search result to any[] for missing type properties ([ddf75ae](https://github.com/wyre-technology/immybot-mcp/commit/ddf75ae8add5bd753f8c8227850c157ca0180f28))
+* correct Streamable HTTP transport import path ([#2](https://github.com/wyre-technology/immybot-mcp/issues/2)) ([deebff6](https://github.com/wyre-technology/immybot-mcp/commit/deebff62e26ec5e2b332802d2545f86a36eb4c57))
+* narrow union type for content[0].text to satisfy TypeScript strict mode ([00855b5](https://github.com/wyre-technology/immybot-mcp/commit/00855b58680b5adea3520da60e75c86903bbf16f))
+* use ListToolsRequestSchema/CallToolRequestSchema and request.params directly ([51f1a75](https://github.com/wyre-technology/immybot-mcp/commit/51f1a7596c98cdd486b43ac7155aaf6c6a93552d))
+* use Record type for string-keyed domainDescriptions access ([7526dfa](https://github.com/wyre-technology/immybot-mcp/commit/7526dfa78e52f422398460e1effd903c0533e081))
+
+
+### Features
+
+* add server.json for MCP Registry publication ([#6](https://github.com/wyre-technology/immybot-mcp/issues/6)) ([00363c8](https://github.com/wyre-technology/immybot-mcp/commit/00363c86efe5c17e569683553b94e83ed4df307b))
+* initial scaffold for immybot-mcp with full domain coverage ([6ff1fe3](https://github.com/wyre-technology/immybot-mcp/commit/6ff1fe3132acfadadf985feac06250244cd21dd1))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
