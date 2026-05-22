@@ -28,7 +28,7 @@ describe('Navigation Handler', () => {
     });
 
     expect(result.isError).toBe(undefined);
-    expect(result.content[0].text).toContain('Navigated to computers domain');
+    expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Navigated to computers domain');
     expect(getCurrentState()).toBe('computers');
   });
 
@@ -38,7 +38,7 @@ describe('Navigation Handler', () => {
     const result = await navigationHandler.handleCall('immybot_back', {});
 
     expect(result.isError).toBe(undefined);
-    expect(result.content[0].text).toContain('Returned to main navigation menu');
+    expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Returned to main navigation menu');
     expect(getCurrentState()).toBe('root');
   });
 
@@ -48,8 +48,8 @@ describe('Navigation Handler', () => {
     const result = await navigationHandler.handleCall('immybot_status', {});
 
     expect(result.isError).toBe(undefined);
-    expect(result.content[0].text).toContain('Currently at: Main Navigation');
-    expect(result.content[0].text).toContain('computers - Device and endpoint management');
+    expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Currently at: Main Navigation');
+    expect((result.content[0] as {type: 'text'; text: string}).text).toContain('computers - Device and endpoint management');
   });
 
   it('should reject invalid domain', async () => {
@@ -58,6 +58,6 @@ describe('Navigation Handler', () => {
     });
 
     expect(result.isError).toBe(true);
-    expect(result.content[0].text).toContain('Invalid domain');
+    expect((result.content[0] as {type: 'text'; text: string}).text).toContain('Invalid domain');
   });
 });
