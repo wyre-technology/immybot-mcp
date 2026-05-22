@@ -145,7 +145,7 @@ async function handleCall(
 
     switch (toolName) {
       case 'immybot_tenants_list': {
-        const tenants = await client.tenants.list(args as any);
+        const tenants = await client.tenants.list(args as any) as any[];
 
         const summary = `Found ${tenants.length} tenants`;
         const detailedList = tenants.map(tenant =>
@@ -165,7 +165,7 @@ async function handleCall(
 
       case 'immybot_tenants_get': {
         const tenantId = args.tenantId as number;
-        const tenant = await client.tenants.get(tenantId);
+        const tenant = await client.tenants.get(tenantId) as any;
 
         const details = [
           `Tenant: ${tenant.name} (ID: ${tenant.id})`,
