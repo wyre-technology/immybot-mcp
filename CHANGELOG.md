@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/wyre-technology/immybot-mcp/compare/v1.1.0...v1.2.0) (2026-05-29)
+
+
+### Features
+
+* **ci:** publish to MCP Registry on release ([#20](https://github.com/wyre-technology/immybot-mcp/issues/20)) ([652e99c](https://github.com/wyre-technology/immybot-mcp/commit/652e99c1862d7fac28d44821c3f5a4f1469973d9))
+
 # [1.1.0](https://github.com/wyre-technology/immybot-mcp/compare/v1.0.0...v1.1.0) (2026-05-22)
 
 
