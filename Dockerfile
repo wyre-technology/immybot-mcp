@@ -44,6 +44,7 @@ RUN chown -R mcp:mcp /app
 LABEL org.opencontainers.image.source=https://github.com/wyre-technology/immybot-mcp
 LABEL org.opencontainers.image.description="MCP server for ImmyBot - Windows endpoint management and software deployment automation"
 LABEL org.opencontainers.image.licenses=Apache-2.0
+LABEL io.modelcontextprotocol.server.name="io.github.wyre-technology/immybot-mcp"
 
 # Switch to non-root user
 USER mcp
