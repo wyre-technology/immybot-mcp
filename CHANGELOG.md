@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.0...v1.2.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* **ci:** stop semantic-release github comment step from failing release; add OCI label ([#21](https://github.com/wyre-technology/immybot-mcp/issues/21)) ([91c16a2](https://github.com/wyre-technology/immybot-mcp/commit/91c16a21ac118d39fd427d289adbbe25bae07c8f))
+
 # [1.2.0](https://github.com/wyre-technology/immybot-mcp/compare/v1.1.0...v1.2.0) (2026-05-29)
 
 
