@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.1...v1.2.2) (2026-05-29)
+
+
+### Bug Fixes
+
+* **registry:** shorten server.json description to <=100 chars ([#22](https://github.com/wyre-technology/immybot-mcp/issues/22)) ([d485c8b](https://github.com/wyre-technology/immybot-mcp/commit/d485c8bba9f49ffca575fd062b92e83b3792afca))
+
 ## [1.2.1](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.0...v1.2.1) (2026-05-29)
 
 
