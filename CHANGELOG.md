@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.2...v1.2.3) (2026-05-30)
+
+
+### Bug Fixes
+
+* republish to MCP Registry with public container image ([#23](https://github.com/wyre-technology/immybot-mcp/issues/23)) ([acd2803](https://github.com/wyre-technology/immybot-mcp/commit/acd280318a7e705ad838b13746454c6ea8e6f036))
+
 ## [1.2.2](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.1...v1.2.2) (2026-05-29)
 
 
