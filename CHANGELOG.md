@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.3...v1.2.4) (2026-07-18)
+
+
+### Bug Fixes
+
+* **deps:** pin typescript back to ^6.0.3, unblock tsup DTS build ([#38](https://github.com/wyre-technology/immybot-mcp/issues/38)) ([6dc4e18](https://github.com/wyre-technology/immybot-mcp/commit/6dc4e18719e3e1225d36c75573ae9bbe076ac99f)), closes [35/blackpoint-mcp#39](https://github.com/35/blackpoint-mcp/issues/39)
+
 ## [1.2.3](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.2...v1.2.3) (2026-05-30)
 
 
