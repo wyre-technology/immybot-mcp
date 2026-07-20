@@ -18,11 +18,18 @@ updates:
       prefix-development: "deps-dev"
       include: "scope"
     groups:
-      # All dev/CI tooling (eslint, vitest, typescript, @types/*, etc.) incl.
-      # majors → ONE PR. The janitor auto-merges it when CI is green.
+      # All dev/CI tooling (eslint, vitest, typescript, @types/*, etc.) →
+      # ONE PR. Minor/patch auto-merged when CI is green.
+      # MAJORS excluded from auto-merge (2026-07-20): a grouped
+      # major bump (e.g. typescript 6->7) auto-merged blind against this
+      # repo's "green" thin-caller release.yml, which has no PR-time
+      # build/test job -- broke main twice in 2 days. Majors now land as
+      # individual, non-auto-merged PRs, same treatment production majors
+      # already get below. Interim stop-gap; the durable fix is real
+      # PR-time CI on this repo (tracked fleet-wide separately).
       dev-dependencies:
         dependency-type: "development"
-        update-types: ["major", "minor", "patch"]
+        update-types: ["minor", "patch"]
       # Production minor + patch → ONE PR. Auto-merged when green.
       production-minor-patch:
         dependency-type: "production"
