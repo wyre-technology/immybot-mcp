@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.5...v1.2.6) (2026-07-20)
+
+
+### Bug Fixes
+
+* **deps:** exclude dev-dependency majors from Dependabot auto-merge ([#41](https://github.com/wyre-technology/immybot-mcp/issues/41)) ([995135d](https://github.com/wyre-technology/immybot-mcp/commit/995135dacb8f47f1435b422053b6dd370b739d58))
+
 ## [1.2.5](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.4...v1.2.5) (2026-07-20)
 
 
