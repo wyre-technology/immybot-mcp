@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.4...v1.2.5) (2026-07-20)
+
+
+### Bug Fixes
+
+* **deps:** re-pin typescript to ^6.0.3 (regressed by [#39](https://github.com/wyre-technology/immybot-mcp/issues/39)) ([#40](https://github.com/wyre-technology/immybot-mcp/issues/40)) ([38f575a](https://github.com/wyre-technology/immybot-mcp/commit/38f575a83241dcf49be233469f6b1bef5bb73784))
+
 ## [1.2.4](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.3...v1.2.4) (2026-07-18)
 
 
