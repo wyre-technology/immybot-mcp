@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.7...v1.2.8) (2026-07-23)
+
+
+### Bug Fixes
+
+* **security:** request-scoped credentials via AsyncLocalStorage to close cross-tenant leak ([#45](https://github.com/wyre-technology/immybot-mcp/issues/45)) ([7abd5b0](https://github.com/wyre-technology/immybot-mcp/commit/7abd5b0fcaf4e07fde51d7289f71804fde1a1503))
+
 ## [1.2.7](https://github.com/wyre-technology/immybot-mcp/compare/v1.2.6...v1.2.7) (2026-07-21)
 
 
