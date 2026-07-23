@@ -1,10 +1,11 @@
 import { ImmyBotClient, type ImmyBotConfig } from '@wyre-technology/node-immybot';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { logger } from './logger.js';
 
 /**
  * Credentials for ImmyBot client
  */
-interface Credentials {
+export interface Credentials {
   instanceSubdomain: string;
   tenantId: string;
   clientId: string;
@@ -12,88 +13,75 @@ interface Credentials {
 }
 
 /**
- * Client singleton with credential management for gateway mode
+ * Per-request credential store. In gateway mode the HTTP layer runs each
+ * request inside runWithCredentials(creds, handler) so concurrent requests
+ * from different tenants never observe each other's credentials. Falls back
+ * to environment variables for direct (stdio) mode.
  */
-let _client: ImmyBotClient | null = null;
-let _credentials: Credentials | null = null;
+const credentialStore = new AsyncLocalStorage<Credentials>();
 
-/**
- * Get credentials from environment variables or headers (gateway mode)
- */
-function getCredentials(): Credentials | null {
-  const isGatewayMode = process.env.AUTH_MODE === 'gateway';
-
-  if (isGatewayMode) {
-    // In gateway mode, credentials come from injected headers
-    const instanceSubdomain = process.env.X_IMMYBOT_INSTANCE_SUBDOMAIN;
-    const tenantId = process.env.X_IMMYBOT_TENANT_ID;
-    const clientId = process.env.X_IMMYBOT_CLIENT_ID;
-    const clientSecret = process.env.X_IMMYBOT_CLIENT_SECRET;
-
-    if (!instanceSubdomain || !tenantId || !clientId || !clientSecret) {
-      logger.debug('Gateway mode: Missing credentials in environment', {
-        hasInstanceSubdomain: !!instanceSubdomain,
-        hasTenantId: !!tenantId,
-        hasClientId: !!clientId,
-        hasClientSecret: !!clientSecret,
-      });
-      return null;
-    }
-
-    return {
-      instanceSubdomain,
-      tenantId,
-      clientId,
-      clientSecret,
-    };
-  } else {
-    // Direct mode: credentials from environment
-    const instanceSubdomain = process.env.IMMYBOT_INSTANCE_SUBDOMAIN;
-    const tenantId = process.env.IMMYBOT_TENANT_ID;
-    const clientId = process.env.IMMYBOT_CLIENT_ID;
-    const clientSecret = process.env.IMMYBOT_CLIENT_SECRET;
-
-    if (!instanceSubdomain || !tenantId || !clientId || !clientSecret) {
-      logger.warn('Direct mode: Missing ImmyBot credentials in environment');
-      return null;
-    }
-
-    return {
-      instanceSubdomain,
-      tenantId,
-      clientId,
-      clientSecret,
-    };
-  }
+export function runWithCredentials<T>(creds: Credentials, fn: () => T): T {
+  return credentialStore.run(creds, fn);
 }
 
 /**
- * Get ImmyBot client instance
- * Automatically handles credential changes in gateway mode
+ * Get credentials — first from AsyncLocalStorage (gateway mode), then from
+ * environment variables (direct / stdio mode).
+ */
+function getCredentials(): Credentials | null {
+  const scoped = credentialStore.getStore();
+  if (scoped) return scoped;
+
+  const isGatewayMode = process.env.AUTH_MODE === 'gateway';
+  if (isGatewayMode) {
+    // No per-request context and gateway mode expects credentials on every
+    // request — there is nothing to fall back to.
+    logger.debug('Gateway mode: no request-scoped credentials available');
+    return null;
+  }
+
+  // Direct mode: credentials from environment
+  const instanceSubdomain = process.env.IMMYBOT_INSTANCE_SUBDOMAIN;
+  const tenantId = process.env.IMMYBOT_TENANT_ID;
+  const clientId = process.env.IMMYBOT_CLIENT_ID;
+  const clientSecret = process.env.IMMYBOT_CLIENT_SECRET;
+
+  if (!instanceSubdomain || !tenantId || !clientId || !clientSecret) {
+    logger.warn('Direct mode: Missing ImmyBot credentials in environment');
+    return null;
+  }
+
+  return { instanceSubdomain, tenantId, clientId, clientSecret };
+}
+
+/**
+ * Client cache keyed by credential fingerprint so different tenants get
+ * separate client instances, but repeated calls for the same tenant reuse
+ * one. Never invalidated by another request's credentials — there is no
+ * shared "current" client, only entries keyed by identity.
+ */
+const clientCache = new Map<string, ImmyBotClient>();
+
+function credentialKey(creds: Credentials): string {
+  return `${creds.instanceSubdomain}:${creds.tenantId}:${creds.clientId}`;
+}
+
+/**
+ * Get ImmyBot client instance for the current request's credentials
+ * (AsyncLocalStorage in gateway mode, environment variables in direct mode).
  */
 export async function getClient(): Promise<ImmyBotClient> {
   const creds = getCredentials();
   if (!creds) {
-    throw new Error('No ImmyBot credentials configured. In gateway mode, ensure headers are set. In direct mode, set environment variables.');
+    throw new Error(
+      'No ImmyBot credentials configured. In gateway mode, ensure headers are set. In direct mode, set environment variables.'
+    );
   }
 
-  // Invalidate cache if credentials changed (important for gateway mode)
-  if (_client && _credentials) {
-    const credsChanged =
-      creds.instanceSubdomain !== _credentials.instanceSubdomain ||
-      creds.tenantId !== _credentials.tenantId ||
-      creds.clientId !== _credentials.clientId ||
-      creds.clientSecret !== _credentials.clientSecret;
+  const key = credentialKey(creds);
+  let client = clientCache.get(key);
 
-    if (credsChanged) {
-      logger.debug('Credentials changed, invalidating client cache');
-      _client = null;
-      _credentials = null;
-    }
-  }
-
-  // Create new client if needed
-  if (!_client) {
+  if (!client) {
     logger.debug('Creating new ImmyBot client', {
       instanceSubdomain: creds.instanceSubdomain,
       tenantId: creds.tenantId,
@@ -109,20 +97,19 @@ export async function getClient(): Promise<ImmyBotClient> {
       userAgent: 'wyre-immybot-mcp/1.0',
     };
 
-    _client = new ImmyBotClient(config);
-    _credentials = creds;
+    client = new ImmyBotClient(config);
+    clientCache.set(key, client);
   }
 
-  return _client;
+  return client;
 }
 
 /**
- * Reset client cache (useful for testing or manual invalidation)
+ * Clear all cached clients (useful for testing).
  */
 export function resetClient(): void {
   logger.debug('Resetting ImmyBot client cache');
-  _client = null;
-  _credentials = null;
+  clientCache.clear();
 }
 
 /**

@@ -2,6 +2,7 @@ import { createServer } from 'http';
 import type { IncomingMessage, ServerResponse } from 'http';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createMcpServer } from './server.js';
+import { runWithCredentials, type Credentials } from './utils/client.js';
 import { logger } from './utils/logger.js';
 
 /**
@@ -9,18 +10,16 @@ import { logger } from './utils/logger.js';
  * Creates per-request server instances for stateless operation (required for gateway mode)
  */
 
-function extractCredentialsFromHeaders(req: IncomingMessage): void {
-  // Extract gateway-injected credentials from headers
-  const instanceSubdomain = req.headers['x-immybot-instance-subdomain'] as string;
-  const tenantId = req.headers['x-immybot-tenant-id'] as string;
-  const clientId = req.headers['x-immybot-client-id'] as string;
-  const clientSecret = req.headers['x-immybot-client-secret'] as string;
-
-  // Set environment variables for client.ts to pick up
-  if (instanceSubdomain) process.env.X_IMMYBOT_INSTANCE_SUBDOMAIN = instanceSubdomain;
-  if (tenantId) process.env.X_IMMYBOT_TENANT_ID = tenantId;
-  if (clientId) process.env.X_IMMYBOT_CLIENT_ID = clientId;
-  if (clientSecret) process.env.X_IMMYBOT_CLIENT_SECRET = clientSecret;
+/**
+ * Extract gateway-injected credentials from headers. Returns null if any
+ * required header is missing — does NOT mutate process.env; credentials are
+ * bound per-request via AsyncLocalStorage in handleMcpRequest below.
+ */
+function extractCredentialsFromHeaders(req: IncomingMessage): Credentials | null {
+  const instanceSubdomain = req.headers['x-immybot-instance-subdomain'] as string | undefined;
+  const tenantId = req.headers['x-immybot-tenant-id'] as string | undefined;
+  const clientId = req.headers['x-immybot-client-id'] as string | undefined;
+  const clientSecret = req.headers['x-immybot-client-secret'] as string | undefined;
 
   logger.debug('Extracted credentials from headers', {
     hasInstanceSubdomain: !!instanceSubdomain,
@@ -28,21 +27,15 @@ function extractCredentialsFromHeaders(req: IncomingMessage): void {
     hasClientId: !!clientId,
     hasClientSecret: !!clientSecret,
   });
+
+  if (!instanceSubdomain || !tenantId || !clientId || !clientSecret) {
+    return null;
+  }
+  return { instanceSubdomain, tenantId, clientId, clientSecret };
 }
 
-async function handleMcpRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
-  logger.debug('MCP request received', {
-    method: req.method,
-    url: req.url,
-    headers: Object.keys(req.headers || {}),
-  });
-
+async function handleMcp(req: IncomingMessage, res: ServerResponse): Promise<void> {
   try {
-    // Extract credentials from headers (gateway mode)
-    if (process.env.AUTH_MODE === 'gateway') {
-      extractCredentialsFromHeaders(req);
-    }
-
     // Create fresh server and transport per request (CRITICAL for gateway mode)
     const server = createMcpServer();
     const transport = new StreamableHTTPServerTransport({
@@ -60,7 +53,6 @@ async function handleMcpRequest(req: IncomingMessage, res: ServerResponse): Prom
     // Connect server to transport and handle request
     await server.connect(transport);
     await transport.handleRequest(req, res);
-
   } catch (error: any) {
     logger.error('MCP transport error', { error: error.message, stack: error.stack });
 
@@ -77,6 +69,30 @@ async function handleMcpRequest(req: IncomingMessage, res: ServerResponse): Prom
       }));
     }
   }
+}
+
+async function handleMcpRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
+  logger.debug('MCP request received', {
+    method: req.method,
+    url: req.url,
+    headers: Object.keys(req.headers || {}),
+  });
+
+  // Gateway mode: bind this request's credentials to an AsyncLocalStorage
+  // context instead of writing them to process.env — under concurrent
+  // multi-tenant load, a shared process-global would let one tenant's
+  // in-flight request observe another tenant's credentials. Missing headers
+  // are not rejected here (tools/list must still work); getClient() throws a
+  // clear error on tools/call instead.
+  if (process.env.AUTH_MODE === 'gateway') {
+    const creds = extractCredentialsFromHeaders(req);
+    if (creds) {
+      await runWithCredentials(creds, () => handleMcp(req, res));
+      return;
+    }
+  }
+
+  await handleMcp(req, res);
 }
 
 export function createHttpServer() {
