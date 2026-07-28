@@ -4,11 +4,18 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { createMcpServer } from './server.js';
 import { runWithCredentials, type Credentials } from './utils/client.js';
 import { logger } from './utils/logger.js';
+import { verifyS2sHeader, S2S_HEADER } from './s2s-verify.js';
 
 /**
  * HTTP transport for MCP server
  * Creates per-request server instances for stateless operation (required for gateway mode)
  */
+
+// Conduit service-to-service auth (gateway#377 parity). Non-empty =
+// enforce X-Gateway-S2S on every /mcp request; empty = disabled, behavior
+// exactly as before (dark-by-default until the gateway provisions this
+// container's derived subkey). See src/s2s-verify.ts.
+const S2S_SECRET = process.env.CONDUIT_S2S_SECRET || '';
 
 /**
  * Extract gateway-injected credentials from headers. Returns null if any
@@ -109,6 +116,18 @@ export function createHttpServer() {
     }
 
     if (req.method === 'POST' && req.url === '/mcp') {
+      // Conduit service-to-service auth (gateway#377 parity): rejected
+      // BEFORE any credential extraction, mirroring every other ported
+      // wrapper (e.g. containers/sentinelone-mcp/gateway_wrapper.py).
+      if (S2S_SECRET && !verifyS2sHeader(req.headers[S2S_HEADER] as string | undefined, S2S_SECRET)) {
+        res.writeHead(401, { 'Content-Type': 'application/json' });
+        res.end(
+          JSON.stringify({
+            error: 'Missing or invalid X-Gateway-S2S header: this endpoint only accepts requests signed by the gateway.',
+          })
+        );
+        return;
+      }
       await handleMcpRequest(req, res);
     } else if (req.method === 'GET' && req.url === '/health') {
       // Health check endpoint
