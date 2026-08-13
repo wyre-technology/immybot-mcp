@@ -29,7 +29,7 @@
     "url": "https://github.com/wyre-technology/immybot-mcp.git"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@wyre-technology/node-immybot": "^1.0.0"
   },
   "devDependencies": {
