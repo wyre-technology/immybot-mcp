@@ -1,5 +1,5 @@
 {
-  "name": "@wyre-technology/immybot-mcp",
+  "name": "@wyre-ai/immybot-mcp",
   "version": "1.2.8",
   "description": "MCP server for ImmyBot - Windows endpoint management and software deployment automation",
   "type": "module",
@@ -26,7 +26,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wyre-technology/immybot-mcp.git"
+    "url": "https://github.com/WYRE-AI/immybot-mcp.git"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",

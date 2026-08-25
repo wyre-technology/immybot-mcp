@@ -1,18 +1,18 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.wyre-technology/immybot-mcp",
+  "name": "io.github.WYRE-AI/immybot-mcp",
   "title": "ImmyBot",
   "description": "MCP server for ImmyBot \u2014 Windows software deployment, maintenance, tenants, deployments.",
   "repository": {
-    "url": "https://github.com/wyre-technology/immybot-mcp",
+    "url": "https://github.com/WYRE-AI/immybot-mcp",
     "source": "github"
   },
   "version": "0.0.0",
-  "websiteUrl": "https://github.com/wyre-technology/immybot-mcp",
+  "websiteUrl": "https://github.com/WYRE-AI/immybot-mcp",
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/wyre-technology/immybot-mcp:0.0.0",
+      "identifier": "ghcr.io/wyre-ai/immybot-mcp:0.0.0",
       "transport": {
         "type": "stdio"
       },
