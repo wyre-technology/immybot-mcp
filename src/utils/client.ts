@@ -1,4 +1,4 @@
-import { ImmyBotClient, type ImmyBotConfig } from '@wyre-technology/node-immybot';
+import { ImmyBotClient, type ImmyBotConfig } from '@wyre-ai/node-immybot';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { logger } from './logger.js';
 

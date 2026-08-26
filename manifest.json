@@ -1,12 +1,12 @@
 {
-  "name": "@wyre-technology/immybot-mcp",
+  "name": "@wyre-ai/immybot-mcp",
   "description": "MCP server for ImmyBot - Windows endpoint management and software deployment automation",
   "version": "1.0.0",
   "author": "WYRE Technology",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wyre-technology/immybot-mcp.git"
+    "url": "https://github.com/WYRE-AI/immybot-mcp.git"
   },
   "capabilities": {
     "tools": {
@@ -65,7 +65,7 @@
   },
   "deployment": {
     "docker": {
-      "image": "ghcr.io/wyre-technology/immybot-mcp",
+      "image": "ghcr.io/wyre-ai/immybot-mcp",
       "ports": ["8080"],
       "environment": {
         "AUTH_MODE": "gateway",
@@ -76,7 +76,7 @@
     }
   },
   "documentation": {
-    "readme": "https://github.com/wyre-technology/immybot-mcp#readme",
+    "readme": "https://github.com/WYRE-AI/immybot-mcp#readme",
     "api": "https://docs.immy.bot/reference/api-documentation/",
     "setup": "https://docs.immy.bot/integrations/build-your-own-integration/"
   }

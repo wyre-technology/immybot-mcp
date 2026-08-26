@@ -1,4 +1,4 @@
-# @wyre-technology/immybot-mcp
+# @wyre-ai/immybot-mcp
 
 MCP server for ImmyBot - Windows endpoint management and software deployment automation.
 
@@ -23,14 +23,14 @@ docker run -d \
   -e AUTH_MODE=gateway \
   -e MCP_HTTP_PORT=8080 \
   -e LOG_LEVEL=info \
-  ghcr.io/wyre-technology/immybot-mcp:latest
+  ghcr.io/wyre-ai/immybot-mcp:latest
 ```
 
 ### Direct Installation
 
 ```bash
-npm install @wyre-technology/immybot-mcp
-npx @wyre-technology/immybot-mcp
+npm install @wyre-ai/immybot-mcp
+npx @wyre-ai/immybot-mcp
 ```
 
 ## Navigation
@@ -226,7 +226,7 @@ Common error types:
 ### Build from Source
 
 ```bash
-git clone https://github.com/wyre-technology/immybot-mcp.git
+git clone https://github.com/WYRE-AI/immybot-mcp.git
 cd immybot-mcp
 npm install
 npm run build
