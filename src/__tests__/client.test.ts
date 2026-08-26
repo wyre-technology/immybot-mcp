@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => {
   return { FakeImmyBotClient, instances };
 });
 
-vi.mock('@wyre-technology/node-immybot', () => ({
+vi.mock('@wyre-ai/node-immybot', () => ({
   ImmyBotClient: mocks.FakeImmyBotClient,
 }));
 
